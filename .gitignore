@@ -1,0 +1,17 @@
+# IDEs and text editors
+.idea/
+
+# VCS
+.hg/
+.hgignore
+.hgtags
+
+# Development-specific data
+changelogs/
+RELEASE-NOTES.md
+
+# Build tools
+.gradle/
+
+# Build and output data
+build/

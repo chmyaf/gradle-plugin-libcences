@@ -1,0 +1,116 @@
+plugins {
+    id "java"
+    id "java-gradle-plugin"
+    id "maven"
+    id "maven-publish"
+    id "com.gradle.plugin-publish" version "0.10.1"
+    id "com.jfrog.bintray" version "1.8.4"
+    id "com.chmyaf.gradle.plugin.changelog" version "1.0.1"
+    id "com.chmyaf.gradle.plugin.doxygen" version "1.3.1"
+}
+
+group "com.chmyaf.gradle.plugin"
+version "1.0.0"
+def publicationVcsUrl = "https://github.com/chmyaf/gradle-plugin-libcenses.git"
+
+sourceCompatibility = 1.8
+
+sourceSets {
+    functionalTest {
+        java {
+            srcDir file("src/testFunc/java")
+        }
+        resources {
+            srcDir file("src/testFunc/resources")
+        }
+        compileClasspath += sourceSets.main.output + configurations.testRuntime
+        runtimeClasspath += output + compileClasspath
+    }
+
+}
+
+task functionalTest(type: Test) {
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath = sourceSets.functionalTest.runtimeClasspath
+}
+check.dependsOn functionalTest
+
+gradlePlugin {
+    testSourceSets sourceSets.functionalTest
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    implementation "org.yaml:snakeyaml:1.24"
+    testImplementation("org.junit.jupiter:junit-jupiter:5.5.0")
+    functionalTestImplementation("org.junit.jupiter:junit-jupiter:5.5.0")
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+functionalTest {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty("bintray.publish.user") ?
+            project.getProperty("bintray.publish.user") :
+            System.getenv("BINTRAY_PUBLISH_USER")
+    key = project.hasProperty("bintray.publish.key") ?
+            project.getProperty("bintray.publish.key") :
+            System.getenv("BINTRAY_PUBLISH_KEY")
+    configurations = ['archives']
+    pkg {
+        repo = project.group
+        name = "gradle-plugin-libcenses"
+        licenses = ["Apache-2.0"]
+        vcsUrl = publicationVcsUrl
+        version {
+            name = project.version
+            vcsTag = project.version
+        }
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    getArchiveClassifier().set("sources")
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+pluginBundle {
+    website = 'https://chmyaf.com'
+    vcsUrl = publicationVcsUrl
+    tags = ['libcenses', 'libraries', 'licenses']
+    description = 'Libraries licenses reminder'
+
+    plugins {
+        gradlePluginLibcenses {
+            id = "${project.group}.${project.name}"
+            displayName = 'Libraries licenses reminder'
+        }
+    }
+}
