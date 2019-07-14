@@ -46,6 +46,8 @@ public class Config {
      * @param libraries Libraries.
      */
     public void setLibraries(List<ConfigLibrary> libraries) {
-        this.libraries = libraries;
+        if (libraries != null) {
+            this.libraries = libraries;
+        }
     }
 }

@@ -55,6 +55,9 @@ class ConfigTest {
         ArrayList<ConfigLibrary> testLibs = new ArrayList<>();
         testLibs.add(new ConfigLibrary());
 
+        config.setLibraries(null);
+        assertNotNull(config.getLibraries());
+
         config.setLibraries(testLibs);
 
         assertEquals(config.getLibraries(), testLibs);
