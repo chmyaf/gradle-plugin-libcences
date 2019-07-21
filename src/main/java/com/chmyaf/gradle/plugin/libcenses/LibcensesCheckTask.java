@@ -31,8 +31,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Task libcensesCheck implementation.
@@ -45,7 +45,7 @@ public class LibcensesCheckTask extends DefaultTask {
     /// Configuration.
     private Config config;
     /// Dependencies.
-    private Set<String> deps = new HashSet<>();
+    private Set<String> deps = new TreeSet<>();
 
     public LibcensesCheckTask() {
         this.LCPE = this.getProject().getExtensions().
@@ -121,8 +121,12 @@ public class LibcensesCheckTask extends DefaultTask {
     private void initDependencies() {
         Project project = this.getProject();
         ConfigurationContainer configurations = project.getConfigurations();
-        Configuration compile = configurations.getByName("compile");
-        compile.forEach(dep -> this.deps.add(dep.getName()));
+        configurations.forEach(configuration -> {
+            if (configuration.isCanBeResolved()) {
+                configuration.forEach(dep -> this.deps.add(dep.getName()));
+            }
+        });
+
     }
 
     /**
