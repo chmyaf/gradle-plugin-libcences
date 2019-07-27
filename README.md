@@ -37,11 +37,13 @@ apply plugin: 'com.chmyaf.gradle.plugin.libcenses'
 
 ```groovy
 libcenses {
-    config = "libcenses.yml"
+    config = ".chmyaf/libcenses.yml"
 }
 ```
 
 ### Libcenses configuration
+
+file: ```.chmyaf/libcenses.yml```
 
 ```yaml
 libraries:

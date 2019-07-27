@@ -39,7 +39,8 @@ class LibcensesCheckTaskFunctionalTest {
 
     private void copyExampleProject() throws IOException {
         this.copyExampleProjectFile("build.gradle");
-        this.copyExampleProjectFile("libcenses.yml");
+        new File(this.testProjectDir.getAbsolutePath(), ".chmyaf").mkdirs();
+        this.copyExampleProjectFile(".chmyaf/libcenses.yml");
     }
 
     private void copyExampleProjectFile(String fname) throws IOException {

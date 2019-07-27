@@ -23,5 +23,5 @@ package com.chmyaf.gradle.plugin.libcenses;
  */
 public class LibcensesPluginExtension {
     /// Path to the configuration file.
-    public String config = "libcenses.yml";
+    public String config = ".chmyaf/libcenses.yml";
 }

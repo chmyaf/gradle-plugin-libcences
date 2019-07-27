@@ -25,6 +25,6 @@ class LibcensesPluginExtensionTest {
     public void testLibcensesPluginExtensionTest() {
         LibcensesPluginExtension lcpe = new LibcensesPluginExtension();
 
-        assertEquals(lcpe.config, "libcenses.yml");
+        assertEquals(lcpe.config, ".chmyaf/libcenses.yml");
     }
 }
